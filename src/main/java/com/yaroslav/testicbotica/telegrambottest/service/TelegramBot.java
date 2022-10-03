@@ -1,32 +1,30 @@
 package com.yaroslav.testicbotica.telegrambottest.service;
 
-import com.yaroslav.testicbotica.telegrambottest.config.BotConfig;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Slf4j
-@Component
 public class TelegramBot extends TelegramLongPollingBot {
 
+    private final String BOT_NAME;
+    private final String BOT_TOKEN;
 
-    final BotConfig config;
-
-    public TelegramBot(BotConfig config) {
-        this.config = config;
+    public TelegramBot(String botName, String botToken) {
+        BOT_NAME = botName;
+        BOT_TOKEN = botToken;
     }
 
     @Override
     public String getBotUsername() {
-        return config.getBotName();
+        return BOT_NAME;
     }
 
     @Override
     public String getBotToken() {
-        return config.getKey();
+        return BOT_TOKEN;
     }
 
     @Override
