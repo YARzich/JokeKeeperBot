@@ -1,7 +1,7 @@
-package com.yaroslav.joke_keeper_bot.telegram;
+package com.yaroslav.joke_keeper_bot.bot.telegram;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -11,10 +11,10 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 @Slf4j
 @Component
+@AllArgsConstructor
 public class TgBotInitializer {
 
-    @Autowired
-    TgHandler bot;
+    private final TgHandler bot;
 
     @EventListener({ContextRefreshedEvent.class})
     public void init() throws TelegramApiException {

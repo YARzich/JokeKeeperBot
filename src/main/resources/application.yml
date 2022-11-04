@@ -1,0 +1,21 @@
+#DB settings
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/joke_keeper_bot
+    username: yarik
+    password: 4Hryf6g5t.
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+logging:
+  level:
+    root: debug
+    com.yaroslav.joke_keeper_bot: debug
+  pattern:
+    console:
+  file:
+    name: /home/yarik/TgBots/joke-keeper-bot/logs/app.log

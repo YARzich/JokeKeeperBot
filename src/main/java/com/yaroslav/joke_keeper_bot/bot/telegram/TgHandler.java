@@ -1,12 +1,11 @@
-package com.yaroslav.joke_keeper_bot.telegram;
+package com.yaroslav.joke_keeper_bot.bot.telegram;
 
 import com.yaroslav.joke_keeper_bot.bot.ChatData;
 import com.yaroslav.joke_keeper_bot.bot.MessageProcessing;
 import com.yaroslav.joke_keeper_bot.bot.MessengerAPI;
-import com.yaroslav.joke_keeper_bot.bot.config.BotConfig;
 import com.yaroslav.joke_keeper_bot.bot.keyboards.Keyboard;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
@@ -19,35 +18,30 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.yaroslav.joke_keeper_bot.bot.config.BotConfig.BOT_NAME;
+import static com.yaroslav.joke_keeper_bot.bot.config.BotConfig.BOT_TOKEN;
+
 @Slf4j
 @Component
+@AllArgsConstructor
 public class TgHandler extends TelegramLongPollingBot implements MessengerAPI {
+    
+    {createMenu();}
 
-    final BotConfig botConfig;
-
-    @Autowired
-    MessageProcessing messageProcessing;
-
-    public TgHandler(BotConfig botConfig) {
-        System.out.println(2);
-        this.botConfig = botConfig;
-
-        createMenu();
-    }
+    private final MessageProcessing messageProcessing;
 
     @Override
     public String getBotUsername() {
-        return botConfig.getBOT_NAME();
+        return BOT_NAME;
     }
 
     @Override
     public String getBotToken() {
-        return botConfig.getBOT_TOKEN();
+        return BOT_TOKEN;
     }
 
     @Override
     public void onUpdateReceived(Update update) {
-
         if(update.hasMessage() && update.getMessage().hasText()) {
 
             ChatData chatData = new ChatData();
@@ -60,7 +54,6 @@ public class TgHandler extends TelegramLongPollingBot implements MessengerAPI {
 
             messageProcessing.processing(chatData, this);
         }
-
     }
 
     private void createMenu() {
@@ -75,11 +68,9 @@ public class TgHandler extends TelegramLongPollingBot implements MessengerAPI {
 
     @Override
     public void sendMessage(long chatId, String message, Keyboard keyboard) {
-
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
         sendMessage.setText(message);
-
 
         if(keyboard != null) {
             TgKeyboard tgKeyboard = new TgKeyboard(keyboard);

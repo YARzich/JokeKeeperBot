@@ -1,19 +1,16 @@
 package com.yaroslav.joke_keeper_bot.bot.config;
 
-import lombok.Getter;
-import org.springframework.context.annotation.Configuration;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.util.Map;
 
-@Configuration
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class BotConfig {
 
     private static final Map<String, String> getenv = System.getenv();
 
-    @Getter
-    private final String BOT_NAME = getenv.get("BOT_NAME");
+    public static final String BOT_NAME = getenv.get("BOT_NAME");
 
-    @Getter
-    private final String BOT_TOKEN = getenv.get("BOT_TOKEN");
-
+    public static final String BOT_TOKEN = getenv.get("BOT_TOKEN");
 }

@@ -4,27 +4,24 @@ import com.yaroslav.joke_keeper_bot.bot.DB.RepositoryManager;
 import com.yaroslav.joke_keeper_bot.bot.DB.tables.User;
 import com.yaroslav.joke_keeper_bot.bot.keyboards.BaseKeyboard;
 import com.yaroslav.joke_keeper_bot.bot.keyboards.Keyboard;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class MessageProcessing {
 
     @Getter
-    @Autowired
-    RepositoryManager repositoryManager;
+    private final RepositoryManager repositoryManager;
 
     @Setter
-    Keyboard keyboard;
-
-    MessageProcessing() {
-        keyboard = new BaseKeyboard();
-    }
+    private Keyboard keyboard = new BaseKeyboard();
 
     public void processing(ChatData chat, MessengerAPI messenger) {
-
         long chatId = chat.getChatId();
         String messageText = chat.getMessageText();
 
@@ -43,6 +40,6 @@ public class MessageProcessing {
     }
 
     public String defaultMessage() {
-        return BotVariables.defaultMessageList.get((int)(Math.random() * BotVariables.defaultMessageList.size()));
+        return BotVariables.DEFAULT_MESSAGE_LIST.get((int)(Math.random() * BotVariables.DEFAULT_MESSAGE_LIST.size()));
     }
 }

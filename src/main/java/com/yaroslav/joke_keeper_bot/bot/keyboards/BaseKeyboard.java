@@ -4,18 +4,13 @@ import com.yaroslav.joke_keeper_bot.bot.BotVariables;
 import com.yaroslav.joke_keeper_bot.bot.ChatData;
 import com.yaroslav.joke_keeper_bot.bot.MessageProcessing;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.yaroslav.joke_keeper_bot.bot.BotVariables.*;
 
 public class BaseKeyboard extends Keyboard {
-    {
-        List<String> row = new ArrayList<>();
-        row.add(GET_JOKE);
-        row.add(SET_JOKE);
-        keyboardRowsList.add(row);
-    }
+
+    { keyboardRowsList.add(List.of(GET_JOKE, SET_JOKE)); }
 
     @Override
     public String checkMessage(ChatData chat, MessageProcessing messageProcessing) {
@@ -36,6 +31,7 @@ public class BaseKeyboard extends Keyboard {
                     messageProcessing.setKeyboard(new JokeAnalysisKeyboard());
                     return messageProcessing.getRepositoryManager().getJoke();
                 }
+                //TODO: маты - плохо
                 return "нахуй иди";
             }
             case GET_JOKE -> {

@@ -1,7 +1,12 @@
 package com.yaroslav.joke_keeper_bot.bot;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class BotVariables {
 
     public static final Long TG_ADMIN_CHATID = Long.valueOf(System.getenv().get("TG_ADMIN_CHATID"));
@@ -15,7 +20,7 @@ public class BotVariables {
 
     public static final String JOKEISGOVNO = "Анекдот - херня " + "❌";
     public static final String START_MESSAGE = "ыыы";
-    public static final List<String> defaultMessageList = List.of("Ты о чем бро?", "Я тебя не понимаю...", "Таким словам меня не учили(", "Какой то ты непонятный, чувак", "Мой автор не такой умный, что бы я знал как отвечать");
+    public static final List<String> DEFAULT_MESSAGE_LIST = List.of("Ты о чем бро?", "Я тебя не понимаю...", "Таким словам меня не учили(", "Какой то ты непонятный, чувак", "Мой автор не такой умный, что бы я знал как отвечать");
 
-    public static final List<String> jokeGenres = List.of("Черный юмор", "Короткие", "Сложные", "Пошлые", "Тупые", "Классические", "Актуальные");
+    public static final List<String> JOKE_GENRES = List.of("Черный юмор", "Короткие", "Сложные", "Пошлые", "Тупые", "Классические", "Актуальные");
 }
