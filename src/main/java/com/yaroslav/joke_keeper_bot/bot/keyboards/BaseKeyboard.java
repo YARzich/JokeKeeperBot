@@ -29,14 +29,20 @@ public class BaseKeyboard extends Keyboard {
             case "/cho" -> {
                 if(chat.getChatId() == TG_ADMIN_CHATID){
                     messageProcessing.setKeyboard(new JokeAnalysisKeyboard());
-                    return messageProcessing.getRepositoryManager().getJoke();
+
+                    ChatData chatData = messageProcessing.getRepositoryManager().getVerifiableJoke();
+                    return chatData == null?
+                            "Анекдотов пока не поступало":
+                            chatData.getMessageText() + "\n" + chatData.getFirstName() + chatData.getLastName();
                 }
-                //TODO: маты - плохо
-                return "нахуй иди";
+                return "ниче";
             }
             case GET_JOKE -> {
                 messageProcessing.setKeyboard(new BaseKeyboard());
-                return FUNCTION_SOON;
+
+                ChatData chatData = messageProcessing.getRepositoryManager().getJoke(chat);
+
+                return chatData.getMessageText() + "\n" + chatData.getFirstName() + chatData.getLastName();
             }
             case SET_JOKE -> {
                 messageProcessing.setKeyboard(new RequestKeyboard());
