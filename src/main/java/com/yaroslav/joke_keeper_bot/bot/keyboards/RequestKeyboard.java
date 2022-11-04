@@ -9,19 +9,15 @@ import java.util.List;
 
 import static com.yaroslav.joke_keeper_bot.bot.BotVariables.GO_BACK;
 
-public class RequestKeyboard extends Keyboard{
-    {
-        List<String> row = new ArrayList<>();
-        row.add(BotVariables.GO_BACK);
-        keyboardRowsList.add(row);
-    }
+public class RequestKeyboard extends Keyboard {
+
+    { keyboardRowsList.add(List.of(GO_BACK)); }
 
     @Override
     public String checkMessage(ChatData chat, MessageProcessing messageProcessing) {
         String messageText = chat.getMessageText();
 
         switch (messageText) {
-
             case GO_BACK -> {
                 messageProcessing.setKeyboard(new BaseKeyboard());
                 return "Как надумаешь - пиши";
@@ -31,7 +27,6 @@ public class RequestKeyboard extends Keyboard{
                 messageProcessing.getRepositoryManager().addJoke(chat);
                 return "Спасибо, если твоя шутка окажется достойной, то ты об этом сразу же узнаешь";
             }
-
         }
     }
 }

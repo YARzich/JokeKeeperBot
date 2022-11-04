@@ -8,31 +8,27 @@ import java.util.Iterator;
 import java.util.List;
 
 import static com.yaroslav.joke_keeper_bot.bot.BotVariables.JOKEISGOVNO;
-import static com.yaroslav.joke_keeper_bot.bot.BotVariables.jokeGenres;
+import static com.yaroslav.joke_keeper_bot.bot.BotVariables.JOKE_GENRES;
 
 public class JokeAnalysisKeyboard extends Keyboard{
 
     {
-        List<String> row;
-        Iterator<String> genresIterator = jokeGenres.iterator();
-        while (genresIterator.hasNext()) {
+        // Количество кнопок на строке
+        int lineSize = 3;
 
-            row = new ArrayList<>();
-            for (int i = 0; i < 3; i++) {
-                row.add(genresIterator.next());
-            }
+        // Идём по списку, шаг - количество кнопок
+        for (int i = 0; i < JOKE_GENRES.size(); i += lineSize) {
+            // Создаём подсписок из основного списка, от шага до двойного шага или размера списка
+            List<String> row = new ArrayList<>(JOKE_GENRES.subList(i, Math.min(JOKE_GENRES.size(), i + lineSize)));
             keyboardRowsList.add(row);
         }
-        row = new ArrayList<>();
-        row.add(JOKEISGOVNO);
     }
 
     @Override
     public String checkMessage(ChatData chat, MessageProcessing messageProcessing) {
-
         String messageText = chat.getMessageText();
 
-        if(jokeGenres.contains(messageText)) {
+        if(JOKE_GENRES.contains(messageText)) {
             messageProcessing.setKeyboard(new BaseKeyboard());
             messageProcessing.getRepositoryManager().registerJoke(chat, messageText);
             return "Так точно, Повелитель" + "\uD83D\uDC4C";

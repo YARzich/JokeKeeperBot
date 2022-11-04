@@ -1,4 +1,4 @@
-package com.yaroslav.joke_keeper_bot.telegram;
+package com.yaroslav.joke_keeper_bot.bot.telegram;
 
 import com.yaroslav.joke_keeper_bot.bot.keyboards.Keyboard;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TgKeyboard {
-    List<List<String>> keyboardRowsList;
+    private final List<List<String>> keyboardRowsList;
 
     public TgKeyboard(Keyboard keyboard) {
         this.keyboardRowsList = keyboard.getKeyboardRowsList();

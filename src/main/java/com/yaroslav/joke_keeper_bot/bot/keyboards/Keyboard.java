@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Keyboard implements UpdateMod {
-    protected List<List<String>> keyboardRowsList = new ArrayList<>();
+    protected final List<List<String>> keyboardRowsList = new ArrayList<>();
 
     public List<List<String>> getKeyboardRowsList() {
         return keyboardRowsList;
