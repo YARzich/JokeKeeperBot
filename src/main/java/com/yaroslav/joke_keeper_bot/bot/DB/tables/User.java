@@ -2,17 +2,14 @@ package com.yaroslav.joke_keeper_bot.bot.DB.tables;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Set;
 
 @Entity(name = "usersDataTable")
 @Getter
 @Setter
-@ToString
 public class User {
 
     @Id
@@ -26,10 +23,25 @@ public class User {
 
     private Long money;
 
-    @OneToMany(mappedBy = "joker", cascade = CascadeType.ALL)
-    private List<Joke> joke;
+    @OneToMany(mappedBy = "joker", cascade = CascadeType.ALL,
+            orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Joke> jokes;
 
-    @OneToMany(mappedBy = "user")
-    private Set<ViewedJokes> viewedJokes;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "joke_view",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "joke_id")
+    )
+    private List<Joke> viewedJokes;
+
+    public void addViewedJoke(Joke joke) {
+        viewedJokes.add(joke);
+    }
+
+    public void addJoke(Joke joke) {
+        jokes.add(joke);
+        joke.setJoker(this);
+    }
 
 }

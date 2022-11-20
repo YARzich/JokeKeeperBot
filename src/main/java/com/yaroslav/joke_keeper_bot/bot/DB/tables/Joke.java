@@ -2,28 +2,28 @@ package com.yaroslav.joke_keeper_bot.bot.DB.tables;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Entity(name = "jokesDataTable")
 @Getter
 @Setter
-@ToString
 public class Joke {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long jokeId;
 
     private String joke;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "joker_id")
     private User joker;
 
     private String genre;
 
-    @OneToMany(mappedBy = "joke")
-    private Set<ViewedJokes> overlooked;
+    @ManyToMany(mappedBy = "viewedJokes", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    private List<User> viewedUsers;
 }

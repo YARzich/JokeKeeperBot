@@ -22,18 +22,17 @@ public class BaseKeyboard extends Keyboard {
                 messageProcessing.getRepositoryManager().registerUser(chat);
                 return BotVariables.START_MESSAGE;
             }
-            case "/help" -> {
-                messageProcessing.setKeyboard(new BaseKeyboard());
-                return BotVariables.HELP_TEXT;
-            }
             case "/cho" -> {
                 if(chat.getChatId() == TG_ADMIN_CHATID){
-                    messageProcessing.setKeyboard(new JokeAnalysisKeyboard());
 
-                    ChatData chatData = messageProcessing.getRepositoryManager().getVerifiableJoke();
-                    return chatData == null?
-                            "Анекдотов пока не поступало":
-                            chatData.getMessageText() + "\n" + chatData.getFirstName() + chatData.getLastName();
+                    ChatData chatData = messageProcessing.getRepositoryManager().peekVerifiableJoke();
+
+                    if(chatData == null) {
+                        return "Анекдотов пока не поступало";
+                    }
+
+                    messageProcessing.setKeyboard(new JokeAnalysisKeyboard());
+                    return chatData.getMessageText() + "\n" + chatData.getFirstName() + chatData.getLastName();
                 }
                 return "ниче";
             }
