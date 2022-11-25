@@ -24,17 +24,15 @@ public class JokeAnalysisKeyboard extends Keyboard{
 
     @Override
     public String checkMessage(ChatData chat, MessageProcessing messageProcessing) {
-        String messageText = chat.getMessageText();
-
         String genre = chat.getMessageText();
 
-        chat.setMessageText(messageProcessing.getRepositoryManager().getVerifiableJoke().getMessageText());
+        chat = messageProcessing.getRepositoryManager().getVerifiableJoke();
 
-        if(JOKE_GENRES.contains(messageText)) {
+        if(JOKE_GENRES.contains(genre)) {
             messageProcessing.setKeyboard(new BaseKeyboard());
             messageProcessing.getRepositoryManager().registerJoke(chat, genre);
             return "Так точно, Повелитель " + "\uD83D\uDC4C";
-        }else if (messageText.equals(JOKEISGOVNO)) {
+        }else if (genre.equals(JOKEISGOVNO)) {
             messageProcessing.setKeyboard(new BaseKeyboard());
             return "Вот и я так думаю";
         }else {

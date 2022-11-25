@@ -21,9 +21,10 @@ public class Joke {
     @JoinColumn(name = "joker_id")
     private User joker;
 
+
     private String genre;
 
     @ManyToMany(mappedBy = "viewedJokes", fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
+            cascade = CascadeType.REMOVE)
     private List<User> viewedUsers;
 }

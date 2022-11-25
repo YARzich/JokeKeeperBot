@@ -27,7 +27,7 @@ public class User {
             orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Joke> jokes;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinTable(
             name = "joke_view",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -44,4 +44,12 @@ public class User {
         joke.setJoker(this);
     }
 
+    public void removeViewedJokes() {
+        viewedJokes.clear();
+    }
+
+    @Override
+    public String toString() {
+        return firstName + " " + (lastName != null?lastName:"") + " Денюшек: " + money;
+    }
 }

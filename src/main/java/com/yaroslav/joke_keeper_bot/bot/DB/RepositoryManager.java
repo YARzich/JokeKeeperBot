@@ -13,9 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 @Component
 @Slf4j
@@ -85,10 +83,30 @@ public class RepositoryManager {
     public ChatData getJoke(ChatData chatData) {
         ChatData jokeData = new ChatData();
 
-        Joke joke = jokeRepository.findById((long)(Math.random() * jokeRepository.count()) + 1).orElseThrow();
+        User user = userRepository.findById(chatData.getChatId()).orElseThrow();
+        Hibernate.initialize(user.getViewedJokes());
+        List<Long> viewedJokes = user.getViewedJokes().stream().map(Joke::getJokeId).toList();
+
+        List<Long> listNonViewedJoke = new ArrayList<>();
+
+        for (long i = 1; i < jokeRepository.count() + 1; i++) {
+            if(!viewedJokes.contains(i)) {
+                listNonViewedJoke.add(i);
+            }
+        }
+
+        if(listNonViewedJoke.isEmpty()) {
+            return null;
+        }
+
+        Joke joke = jokeRepository
+                .findById(listNonViewedJoke.get((int)(Math.random() * listNonViewedJoke.size()))).orElseThrow();
+
+        user.addViewedJoke(joke);
 
         Hibernate.initialize(joke.getJoker());
         Hibernate.initialize(joke.getJoke());
+        Hibernate.initialize(joke.getGenre());
 
         User joker = joke.getJoker();
 
@@ -96,9 +114,30 @@ public class RepositoryManager {
         jokeData.setFirstName(joker.getFirstName());
         jokeData.setLastName(joker.getLastName());
         jokeData.setUserName(joker.getUserName());
-        jokeData.setMessageText(joke.getJoke());
+        jokeData.setMessageText(joke.getJoke() +
+                "\n\nЖанр: " + joke.getGenre());
 
         return jokeData;
+    }
+
+    @Transactional
+    public void deleteViewedJokes(ChatData chatData) {
+        User user = userRepository.findById(chatData.getChatId()).orElseThrow();
+        Hibernate.initialize(user.getViewedJokes());
+        user.removeViewedJokes();
+    }
+
+    public long getMoney(ChatData chatData) {
+        return userRepository.findById(chatData.getChatId()).orElseThrow().getMoney();
+    }
+
+    @Transactional
+    public List<User> getLeaderboard() {
+        List<User> list = (List<User>) userRepository.findAll();
+
+        list.sort((o1, o2) -> o2.getMoney().compareTo(o1.getMoney()));
+
+        return list;
     }
 
 }
