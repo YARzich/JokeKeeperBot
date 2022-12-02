@@ -1,5 +1,6 @@
 package com.yaroslav.joke_keeper_bot.bot.telegram;
 
+import com.yaroslav.joke_keeper_bot.bot.BotVariables;
 import com.yaroslav.joke_keeper_bot.bot.ChatData;
 import com.yaroslav.joke_keeper_bot.bot.MessageProcessing;
 import com.yaroslav.joke_keeper_bot.bot.MessengerAPI;
@@ -25,8 +26,10 @@ import static com.yaroslav.joke_keeper_bot.bot.config.BotConfig.BOT_TOKEN;
 @Component
 @AllArgsConstructor
 public class TgHandler extends TelegramLongPollingBot implements MessengerAPI {
-    
-    {createMenu();}
+
+    {
+        createMenu();
+    }
 
     private final MessageProcessing messageProcessing;
 
@@ -52,7 +55,7 @@ public class TgHandler extends TelegramLongPollingBot implements MessengerAPI {
             chatData.setUserName(update.getMessage().getChat().getUserName());
             chatData.setMessageText(update.getMessage().getText());
 
-            messageProcessing.processing(chatData, this);
+            messageProcessing.processing(chatData, this, BotVariables.getKeyboard(chatData.getChatId()));
         }
     }
 

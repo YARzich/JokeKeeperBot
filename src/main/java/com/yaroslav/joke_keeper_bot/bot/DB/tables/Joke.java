@@ -15,6 +15,8 @@ public class Joke {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long jokeId;
 
+    @Lob
+    @Column(length = 2000)
     private String joke;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

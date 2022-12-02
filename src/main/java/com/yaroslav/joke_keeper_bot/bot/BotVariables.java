@@ -1,9 +1,13 @@
 package com.yaroslav.joke_keeper_bot.bot;
 
+import com.yaroslav.joke_keeper_bot.bot.keyboards.BaseKeyboard;
+import com.yaroslav.joke_keeper_bot.bot.keyboards.Keyboard;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -32,4 +36,21 @@ public class BotVariables {
             "Какой то ты непонятный, чувак", "Мой автор не такой умный, что бы я знал как отвечать");
 
     public static final List<String> JOKE_GENRES = List.of("Черный юмор", "Сложные", "Пошлые", "Тупые", "Классические", "Актуальные");
+
+    private static final Map<Long, Keyboard> keyboardMap = new HashMap<>();
+
+    static {
+        MessageProcessing.getRepositoryManager().getUserRepository().findAll().forEach(x -> keyboardMap.put(x.getChatId(), new BaseKeyboard()));
+    }
+
+    public static String defaultMessage() {
+        return BotVariables.DEFAULT_MESSAGE_LIST.get((int)(Math.random() * BotVariables.DEFAULT_MESSAGE_LIST.size()));
+    }
+
+    public static Keyboard getKeyboard(Long userId) {
+        return keyboardMap.get(userId);
+    }
+    public static void setKeyboard(Long userId, Keyboard keyboard) {
+        keyboardMap.put(userId, keyboard);
+    }
 }

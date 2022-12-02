@@ -18,33 +18,33 @@ public class BaseKeyboard extends Keyboard {
     }
 
     @Override
-    public String checkMessage(ChatData chat, MessageProcessing messageProcessing) {
+    public String checkMessage(ChatData chat) {
 
         String messageText = chat.getMessageText();
 
         switch (messageText) {
             case "/start" -> {
-                messageProcessing.getRepositoryManager().registerUser(chat);
+                MessageProcessing.getRepositoryManager().registerUser(chat);
                 return BotVariables.START_MESSAGE;
             }
             case "/cho" -> {
                 if(chat.getChatId() == TG_ADMIN_CHATID){
 
-                    ChatData chatData = messageProcessing.getRepositoryManager().peekVerifiableJoke();
+                    ChatData chatData = MessageProcessing.getRepositoryManager().peekVerifiableJoke();
 
                     if(chatData == null) {
                         return "Анекдотов пока не поступало";
                     }
 
-                    messageProcessing.setKeyboard(new JokeAnalysisKeyboard());
+                    BotVariables.setKeyboard(chat.getChatId(), new JokeAnalysisKeyboard());
                     return chatData.getMessageText() + "\n" + chatData.getFirstName() + (chatData.getLastName() != null?chatData.getLastName():"");
                 }
                 return "ниче";
             }
             case GET_JOKE -> {
-                messageProcessing.setKeyboard(new BaseKeyboard());
+                BotVariables.setKeyboard(chat.getChatId(), new BaseKeyboard());
 
-                ChatData chatData = messageProcessing.getRepositoryManager().getJoke(chat);
+                ChatData chatData = MessageProcessing.getRepositoryManager().getJoke(chat);
 
                 if(chatData == null) {
                     return "Ого, ты просмотрел все анекдоты!\n" + "Если считаешь что у нас мало анекдотов, то помни, что всегда можешь предложить свои)";
@@ -53,15 +53,15 @@ public class BaseKeyboard extends Keyboard {
                 return chatData.getMessageText() + "\n" + chatData.getFirstName() + " " + (chatData.getLastName() != null?chatData.getLastName():"");
             }
             case SET_JOKE -> {
-                messageProcessing.setKeyboard(new RequestKeyboard());
+                BotVariables.setKeyboard(chat.getChatId(), new RequestKeyboard());
                 return REQUEST_JOKE;
             }
             case FORGET_JOKES -> {
-                messageProcessing.getRepositoryManager().deleteViewedJokes(chat);
+                MessageProcessing.getRepositoryManager().deleteViewedJokes(chat);
                 return "\uD83D\uDD74" + "\uD83D\uDCA5" + "Вы забыли все анекдоты";
             }
             case SHOW_MONEY -> {
-                return "У вас " + messageProcessing.getRepositoryManager().getMoney(chat) + " монеток\n"
+                return "У вас " + MessageProcessing.getRepositoryManager().getMoney(chat) + " монеток\n"
                         + "Заработать их можно предлагая свои анекдоты, которые пройдут проверку\n"
                         + "Но мой создатель к сожалению еще не придумал что с их помощью можно делать кроме как хвастаться друзьям\n"
                         + "Поэтому если у вас есть хорошая идея, вы можете написать её сюда -> @Yarzuki";
@@ -70,7 +70,7 @@ public class BaseKeyboard extends Keyboard {
 
                 StringBuilder sb = new StringBuilder();
 
-                List<User> list = messageProcessing.getRepositoryManager().getLeaderboard();
+                List<User> list = MessageProcessing.getRepositoryManager().getLeaderboard();
 
                 for (int i = 0; i < list.size(); i++) {
                     sb.append(i + 1).append(". ").append(list.get(i).toString());
@@ -87,7 +87,7 @@ public class BaseKeyboard extends Keyboard {
                 return sb.toString();
             }
             default -> {
-                return messageProcessing.defaultMessage();
+                return BotVariables.defaultMessage();
             }
         }
     }

@@ -10,7 +10,6 @@
 	</parent>
 	<groupId>com.yaroslav.joke_keeper_bot</groupId>
 	<artifactId>JokeKeeperBot</artifactId>
-	<version>0.0.1</version>
 	<name>JokeKeeperBot</name>
 	<description>JokeKeeperBot</description>
 	<properties>

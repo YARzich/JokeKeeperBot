@@ -132,7 +132,7 @@ public class RepositoryManager {
     }
 
     @Transactional
-    public List<User> getLeaderboard() {
+        public List<User> getLeaderboard() {
         List<User> list = (List<User>) userRepository.findAll();
 
         list.sort((o1, o2) -> o2.getMoney().compareTo(o1.getMoney()));
