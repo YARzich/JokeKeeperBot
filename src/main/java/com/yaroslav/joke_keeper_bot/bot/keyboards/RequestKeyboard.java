@@ -6,7 +6,7 @@ import com.yaroslav.joke_keeper_bot.bot.MessageProcessing;
 
 import java.util.List;
 
-import static com.yaroslav.joke_keeper_bot.bot.BotVariables.GO_BACK;
+import static com.yaroslav.joke_keeper_bot.bot.BotVariables.*;
 
 public class RequestKeyboard extends Keyboard {
 
@@ -15,6 +15,13 @@ public class RequestKeyboard extends Keyboard {
     @Override
     public String checkMessage(ChatData chat) {
         String messageText = chat.getMessageText();
+
+        switch (messageText) {
+            case GET_JOKE, LEADERBOARD, SHOW_MONEY, FORGET_JOKES, SET_JOKE -> {
+                return BotVariables.defaultMessage();
+            }
+
+        }
 
         if (GO_BACK.equals(messageText)) {
             BotVariables.setKeyboard(chat.getChatId(), new BaseKeyboard());
