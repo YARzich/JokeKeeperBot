@@ -24,7 +24,6 @@ public class BaseKeyboard extends Keyboard {
 
         switch (messageText) {
             case "/start" -> {
-                MessageProcessing.getRepositoryManager().registerUser(chat);
                 return BotVariables.START_MESSAGE;
             }
             case "/cho" -> {

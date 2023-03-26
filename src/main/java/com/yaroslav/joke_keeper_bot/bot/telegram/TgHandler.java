@@ -55,6 +55,8 @@ public class TgHandler extends TelegramLongPollingBot implements MessengerAPI {
             chatData.setUserName(update.getMessage().getChat().getUserName());
             chatData.setMessageText(update.getMessage().getText());
 
+            MessageProcessing.getRepositoryManager().registerUser(chatData);
+
             messageProcessing.processing(chatData, this, BotVariables.getKeyboard(chatData.getChatId()));
         }
     }
@@ -65,7 +67,7 @@ public class TgHandler extends TelegramLongPollingBot implements MessengerAPI {
         try {
             execute(new SetMyCommands(listOfCommands, new BotCommandScopeDefault(), null));
         } catch (TelegramApiException e) {
-            log.error("Error setting bot's command list: " + e.getMessage());
+            log.error("Error setting bots command list: " + e.getMessage());
         }
     }
 
