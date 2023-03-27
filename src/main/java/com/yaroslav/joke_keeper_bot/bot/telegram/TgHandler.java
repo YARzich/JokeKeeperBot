@@ -26,7 +26,6 @@ import static com.yaroslav.joke_keeper_bot.bot.config.BotConfig.BOT_TOKEN;
 @Component
 @AllArgsConstructor
 public class TgHandler extends TelegramLongPollingBot implements MessengerAPI {
-
     {
         createMenu();
     }
@@ -58,6 +57,14 @@ public class TgHandler extends TelegramLongPollingBot implements MessengerAPI {
             MessageProcessing.getRepositoryManager().registerUser(chatData);
 
             messageProcessing.processing(chatData, this, BotVariables.getKeyboard(chatData.getChatId()));
+        } else if (update.hasCallbackQuery()) {
+            String callbackData = update.getCallbackQuery().getData();
+            int messageId = update.getCallbackQuery().getMessage().getMessageId();
+            long chatId = update.getCallbackQuery().getMessage().getChat().getId();
+
+            if(callbackData.equals("rating_gpt_button")) {
+
+            }
         }
     }
 
@@ -78,8 +85,7 @@ public class TgHandler extends TelegramLongPollingBot implements MessengerAPI {
         sendMessage.setText(message);
 
         if(keyboard != null) {
-            TgKeyboard tgKeyboard = new TgKeyboard(keyboard);
-            tgKeyboard.setKeyboard(sendMessage);
+            sendMessage.setReplyMarkup(new TgKeyboard(keyboard).getKeyboard());
         }
 
         try {

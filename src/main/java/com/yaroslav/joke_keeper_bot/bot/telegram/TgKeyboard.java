@@ -1,7 +1,6 @@
 package com.yaroslav.joke_keeper_bot.bot.telegram;
 
 import com.yaroslav.joke_keeper_bot.bot.keyboards.Keyboard;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
@@ -15,7 +14,7 @@ public class TgKeyboard {
         this.keyboardRowsList = keyboard.getKeyboardRowsList();
     }
 
-    public void setKeyboard(SendMessage sendMessage) {
+    public ReplyKeyboardMarkup getKeyboard() {
 
         ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
 
@@ -30,6 +29,6 @@ public class TgKeyboard {
 
         keyboardMarkup.setKeyboard(keyboardRows);
 
-        sendMessage.setReplyMarkup(keyboardMarkup);
+        return keyboardMarkup;
     }
 }
