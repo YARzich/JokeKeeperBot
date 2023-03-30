@@ -1,9 +1,8 @@
 package com.yaroslav.joke_keeper_bot.bot.telegram;
 
-import com.yaroslav.joke_keeper_bot.bot.BotVariables;
-import com.yaroslav.joke_keeper_bot.bot.ChatData;
-import com.yaroslav.joke_keeper_bot.bot.MessageProcessing;
-import com.yaroslav.joke_keeper_bot.bot.MessengerAPI;
+import com.yaroslav.joke_keeper_bot.bot.*;
+import com.yaroslav.joke_keeper_bot.bot.DB.RepositoryManager;
+import com.yaroslav.joke_keeper_bot.bot.DB.services.UserService;
 import com.yaroslav.joke_keeper_bot.bot.keyboards.Keyboard;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +44,6 @@ public class TgHandler extends TelegramLongPollingBot implements MessengerAPI {
     @Override
     public void onUpdateReceived(Update update) {
         if(update.hasMessage() && update.getMessage().hasText()) {
-
             ChatData chatData = new ChatData();
 
             chatData.setChatId(update.getMessage().getChatId());
@@ -56,7 +54,8 @@ public class TgHandler extends TelegramLongPollingBot implements MessengerAPI {
 
             MessageProcessing.getRepositoryManager().registerUser(chatData);
 
-            messageProcessing.processing(chatData, this, BotVariables.getKeyboard(chatData.getChatId()));
+            messageProcessing.processing(chatData, this, MessageProcessing.getRepositoryManager()
+                    .getUserService().getKeyboard(chatData.getChatId()));
         } else if (update.hasCallbackQuery()) {
             String callbackData = update.getCallbackQuery().getData();
             int messageId = update.getCallbackQuery().getMessage().getMessageId();
@@ -79,14 +78,15 @@ public class TgHandler extends TelegramLongPollingBot implements MessengerAPI {
     }
 
     @Override
-    public void sendMessage(long chatId, String message, Keyboard keyboard) {
+    public void sendMessage(Message message) {
         SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(chatId);
-        sendMessage.setText(message);
+        sendMessage.setChatId(message.getChatId());
+        sendMessage.setText(message.getMessage());
 
-        if(keyboard != null) {
-            sendMessage.setReplyMarkup(new TgKeyboard(keyboard).getKeyboard());
-        }
+        if(message.getKeyboard() != null) {
+            sendMessage.setReplyMarkup(new TgKeyboard(message.getKeyboard()).getKeyboard());
+            MessageProcessing.getRepositoryManager().getUserService().updateUser(message.getChatId(), message.getKeyboard());
+         }
 
         try {
             execute(sendMessage);

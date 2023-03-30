@@ -1,9 +1,11 @@
 package com.yaroslav.joke_keeper_bot.bot.DB.tables;
 
+import com.yaroslav.joke_keeper_bot.bot.keyboards.Keyboard;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.security.Key;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -22,6 +24,8 @@ public class User {
     private Timestamp registeredAt;
 
     private Long money;
+
+    private String keyboard;
 
     @OneToMany(mappedBy = "joker", cascade = CascadeType.ALL,
             orphanRemoval = true, fetch = FetchType.LAZY)

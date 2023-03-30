@@ -3,6 +3,7 @@ package com.yaroslav.joke_keeper_bot.bot.DB;
 import com.yaroslav.joke_keeper_bot.bot.ChatData;
 import com.yaroslav.joke_keeper_bot.bot.DB.repositores.JokeRepository;
 import com.yaroslav.joke_keeper_bot.bot.DB.repositores.UserRepository;
+import com.yaroslav.joke_keeper_bot.bot.DB.services.UserService;
 import com.yaroslav.joke_keeper_bot.bot.DB.tables.Joke;
 import com.yaroslav.joke_keeper_bot.bot.DB.tables.User;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,8 @@ public class RepositoryManager {
     private final UserRepository userRepository;
 
     private final JokeRepository jokeRepository;
+
+    private final UserService userService;
 
     private final Queue<ChatData> jokeQueue = new LinkedList<>();
 

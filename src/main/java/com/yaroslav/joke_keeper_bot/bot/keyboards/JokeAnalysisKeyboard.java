@@ -2,6 +2,7 @@ package com.yaroslav.joke_keeper_bot.bot.keyboards;
 
 import com.yaroslav.joke_keeper_bot.bot.BotVariables;
 import com.yaroslav.joke_keeper_bot.bot.ChatData;
+import com.yaroslav.joke_keeper_bot.bot.Message;
 import com.yaroslav.joke_keeper_bot.bot.MessageProcessing;
 
 import java.util.List;
@@ -24,20 +25,19 @@ public class JokeAnalysisKeyboard extends Keyboard{
     }
 
     @Override
-    public String checkMessage(ChatData chat) {
+    public Message checkMessage(ChatData chat) {
         String genre = chat.getMessageText();
 
         ChatData joke = MessageProcessing.getRepositoryManager().getVerifiableJoke();
 
         if(JOKE_GENRES.contains(genre)) {
-            BotVariables.setKeyboard(chat.getChatId(), new BaseKeyboard());
             MessageProcessing.getRepositoryManager().registerJoke(joke, genre);
-            return "Так точно, Повелитель " + "\uD83D\uDC4C";
+            return new Message(chat.getChatId(), "Так точно, Повелитель " + "\uD83D\uDC4C",
+                    new BaseKeyboard());
         }else if (genre.equals(JOKEISGOVNO)) {
-            BotVariables.setKeyboard(chat.getChatId(), new BaseKeyboard());
-            return "Вот и я так думаю";
+            return new Message(chat.getChatId(), "Вот и я так думаю", new BaseKeyboard());
         }else {
-            return BotVariables.defaultMessage();
+            return new Message(chat.getChatId(), BotVariables.defaultMessage(), null);
         }
     }
 }
