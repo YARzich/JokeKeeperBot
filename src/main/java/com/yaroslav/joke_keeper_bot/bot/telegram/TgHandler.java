@@ -13,6 +13,8 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.ArrayList;
@@ -86,7 +88,7 @@ public class TgHandler extends TelegramLongPollingBot implements MessengerAPI {
         if(message.getKeyboard() != null) {
             sendMessage.setReplyMarkup(new TgKeyboard(message.getKeyboard()).getKeyboard());
             MessageProcessing.getRepositoryManager().getUserService().updateUser(message.getChatId(), message.getKeyboard());
-         }
+        }
 
         try {
             execute(sendMessage);
